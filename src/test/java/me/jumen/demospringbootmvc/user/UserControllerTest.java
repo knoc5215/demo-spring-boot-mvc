@@ -40,4 +40,17 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.password", is(equalTo("5215"))));
 
     }
+
+    @Test
+    public void createUser_XML() throws Exception {
+        String userJson = "{\"username\":\"jumen\", \"password\":\"5215\"}";
+        mockMvc.perform(post("/users/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept((MediaType.APPLICATION_XML))
+                .content(userJson))
+            .andExpect(status().isOk())
+            .andExpect(xpath("/User/username").string("jumen"))
+            .andExpect(xpath("/User/password").string("5215"));
+
+    }
 }
