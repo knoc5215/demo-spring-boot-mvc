@@ -1,5 +1,6 @@
 package me.jumen.demospringbootmvc.sample;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlHeading1;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -30,6 +31,17 @@ class SampleControllerTest {
                 .andExpect(view().name("hello"))
                 .andExpect(model().attribute("name", is("jumen")))
                 .andExpect(content().string(containsString("jumen")));
+    }
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Test
+    public void hateoas() throws Exception {
+        mockMvc.perform(get("/hateoas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._links.self").exists())
+                .andDo(print());
     }
 
     @Autowired
